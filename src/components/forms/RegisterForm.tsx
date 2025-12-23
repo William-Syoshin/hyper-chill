@@ -9,6 +9,7 @@ import {
   validateNickname,
   validateInstagramId,
   validateImage,
+  type ValidationResult,
 } from '@/lib/validation'
 import { PHOTO_USAGE_NOTICE } from '@/lib/constants'
 import { setUserId } from '@/lib/cookie'
@@ -65,7 +66,7 @@ export function RegisterForm({ venueId, venueName }: RegisterFormProps) {
     const instagramValidation = validateInstagramId(instagramId)
     
     // 画像が選択されている場合のみバリデーション
-    let imageValidation = { valid: true, error: undefined }
+    let imageValidation: ValidationResult = { valid: true }
     if (iconFile && iconFile.size > 0) {
       imageValidation = validateImage(iconFile)
     }

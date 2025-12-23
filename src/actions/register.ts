@@ -67,8 +67,7 @@ export async function registerUser(formData: FormData) {
     }
 
     // ユーザーを作成
-    // @ts-ignore - Supabase type inference issue
-    const { data: user, error: userError } = await supabase
+    const { data: user, error: userError } = await (supabase as any)
       .from('users')
       .insert({
         nickname: nickname.trim(),
@@ -88,8 +87,7 @@ export async function registerUser(formData: FormData) {
     }
 
     // visit_logを追加（初回チェックイン）
-    // @ts-ignore - Supabase type inference issue
-    const { error: logError } = await supabase
+    const { error: logError } = await (supabase as any)
       .from('visit_logs')
       .insert({
         user_id: user.id,

@@ -67,7 +67,7 @@ export function AnimatedBackground() {
 
       constructor() {
         this.radius = 0
-        this.maxRadius = Math.max(canvas.width, canvas.height)
+        this.maxRadius = Math.max(canvas!.width, canvas!.height)
         this.opacity = 0.3
         this.speed = 2
       }
@@ -115,10 +115,10 @@ export function AnimatedBackground() {
     const animate = () => {
       // 画面を少しずつ暗く
       ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.fillRect(0, 0, canvas!.width, canvas!.height)
 
-      const centerX = canvas.width / 2
-      const centerY = canvas.height / 2
+      const centerX = canvas!.width / 2
+      const centerY = canvas!.height / 2
 
       // 脈拍のスケール計算（sin波で1.0〜1.15の間で変動）
       pulseTime += pulseSpeed

@@ -33,7 +33,8 @@ export default async function RegisterPage({ params }: PageProps) {
     .eq('id', venue)
     .single()
 
-  const venueName = venueData?.name || `会場${venue}`
+  const typedVenueData = venueData as { id: string; name: string } | null
+  const venueName = typedVenueData?.name || `会場${venue}`
 
   return (
     <>

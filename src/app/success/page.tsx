@@ -25,8 +25,9 @@ async function SuccessContent({
       .eq('id', venueId)
       .single()
 
-    if (venueData) {
-      venueName = venueData.name
+    const typedVenueData = venueData as { name: string } | null
+    if (typedVenueData) {
+      venueName = typedVenueData.name
     }
   }
 
@@ -37,8 +38,9 @@ async function SuccessContent({
       .eq('id', userId)
       .single()
 
-    if (userData) {
-      userName = userData.nickname
+    const typedUserData = userData as { nickname: string } | null
+    if (typedUserData) {
+      userName = typedUserData.nickname
     }
   }
 

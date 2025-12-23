@@ -54,8 +54,10 @@ export async function checkIn(venueId: string) {
       .limit(1)
       .single()
 
+    const typedLatestLog = latestLog as { venue_id: string } | null
+
     // 同じ会場への連続チェックインは無視
-    if (latestLog && latestLog.venue_id === venueId) {
+    if (typedLatestLog && typedLatestLog.venue_id === venueId) {
       return {
         success: true,
         message: 'すでにこの会場にいます',
@@ -65,8 +67,7 @@ export async function checkIn(venueId: string) {
     }
 
     // visit_logを追加（会場移動）
-    // @ts-ignore - Supabase type inference issue
-    const { error: logError } = await supabase
+    const { error: logError } = await (supabase as any)
       .from('visit_logs')
       .insert({
         user_id: userId,
