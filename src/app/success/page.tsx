@@ -49,11 +49,18 @@ async function SuccessContent({
 
   return (
     <div className="space-y-6">
+      {/* タイトル */}
+      <div className="text-center">
+        <h1 className="text-5xl font-bold text-white mb-8 glow-text tracking-wider">
+          HYPER CHILL
+        </h1>
+      </div>
+
       {/* チェックイン完了メッセージ */}
       <div className="dark-card rounded-lg p-8 text-center">
-        <h1 className="text-3xl font-bold text-white mb-4 glow-text">
+        <h2 className="text-3xl font-bold text-white mb-4 glow-text">
           チェックイン完了！
-        </h1>
+        </h2>
         {userName && (
           <p className="text-xl text-gray-300 mb-4">
             {userName}さん、ようこそ！

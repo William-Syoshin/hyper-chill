@@ -39,19 +39,28 @@ export default async function CheckinPage({ params }: PageProps) {
       <>
         <AnimatedBackground />
         <main className="min-h-screen flex items-center justify-center p-4 relative z-10">
-          <div className="max-w-md w-full dark-card rounded-lg p-8">
-            <div className="text-center">
-              <div className="text-6xl mb-4">❌</div>
-              <h1 className="text-2xl font-bold text-white mb-2 glow-text">
-                エラーが発生しました
+          <div className="max-w-md w-full">
+            {/* タイトル */}
+            <div className="text-center mb-8">
+              <h1 className="text-5xl font-bold text-white mb-2 glow-text tracking-wider">
+                HYPER CHILL
               </h1>
-              <p className="text-gray-400 mb-6">{result.error}</p>
-              <Link
-                href="/"
-                className="inline-block px-6 py-3 bg-white/10 text-white rounded-lg hover:bg-white/20 transition border border-white/20"
-              >
-                トップページへ
-              </Link>
+            </div>
+
+            <div className="dark-card rounded-lg p-8">
+              <div className="text-center">
+                <div className="text-6xl mb-4">❌</div>
+                <h2 className="text-2xl font-bold text-white mb-2 glow-text">
+                  エラーが発生しました
+                </h2>
+                <p className="text-gray-400 mb-6">{result.error}</p>
+                <Link
+                  href="/"
+                  className="inline-block px-6 py-3 bg-white/10 text-white rounded-lg hover:bg-white/20 transition border border-white/20"
+                >
+                  トップページへ
+                </Link>
+              </div>
             </div>
           </div>
         </main>
