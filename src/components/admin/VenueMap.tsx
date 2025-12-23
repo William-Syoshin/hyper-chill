@@ -31,9 +31,9 @@ export function VenueMap({ venues, darkMode = false }: VenueMapProps) {
   }, [])
 
   const venuePositions = {
-    A: { left: '15%', top: '30%' },
-    B: { left: '50%', top: '50%' },
-    C: { left: '75%', top: '25%' },
+    homeplanet: { left: '15%', top: '30%' },
+    movement: { left: '50%', top: '50%' },
+    astro: { left: '75%', top: '25%' },
   }
 
   const handleVenueClick = async (venueId: string) => {
@@ -98,9 +98,9 @@ export function VenueMap({ venues, darkMode = false }: VenueMapProps) {
       {venues.map((venue) => {
         const position = venuePositions[venue.id as keyof typeof venuePositions]
         const bgColor =
-          venue.id === 'A'
+          venue.id === 'homeplanet'
             ? '#8b5555' // 灰色がかった赤
-            : venue.id === 'B'
+            : venue.id === 'movement'
               ? '#558b55' // 灰色がかった緑
               : '#55658b' // 灰色がかった青
 
@@ -149,7 +149,7 @@ export function VenueMap({ venues, darkMode = false }: VenueMapProps) {
           <div className={darkMode ? 'dark-card rounded-lg p-6 max-w-md w-full mx-4 max-h-[80vh] overflow-y-auto shadow-2xl' : 'bg-white rounded-lg p-6 max-w-md w-full mx-4 max-h-[80vh] overflow-y-auto shadow-2xl'} onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
               <h3 className={darkMode ? 'text-xl font-bold text-white glow-text' : 'text-xl font-bold text-gray-900'}>
-                会場{selectedVenue}の来場者
+                {venues.find(v => v.id === selectedVenue)?.name || selectedVenue}の来場者
               </h3>
               <button
                 onClick={handleCloseModal}

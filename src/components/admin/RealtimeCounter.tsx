@@ -50,9 +50,9 @@ export function RealtimeCounter({ initialVenues, darkMode = false }: RealtimeCou
         <div className="grid grid-cols-3 gap-4">
           {venues.map((venue) => {
             const borderColor =
-              venue.id === 'A'
+              venue.id === 'homeplanet'
                 ? 'rgba(139, 85, 85, 0.5)' // 灰色がかった赤
-                : venue.id === 'B'
+                : venue.id === 'movement'
                   ? 'rgba(85, 139, 85, 0.5)' // 灰色がかった緑
                   : 'rgba(85, 101, 139, 0.5)' // 灰色がかった青
 
@@ -97,16 +97,16 @@ export function RealtimeCounter({ initialVenues, darkMode = false }: RealtimeCou
       <div className="grid grid-cols-3 gap-4">
         {venues.map((venue) => {
           const borderColor =
-            venue.id === 'A'
+            venue.id === 'homeplanet'
               ? '#8b5555' // 灰色がかった赤
-              : venue.id === 'B'
+              : venue.id === 'movement'
                 ? '#558b55' // 灰色がかった緑
                 : '#55658b' // 灰色がかった青
           
           const bgColor =
-            venue.id === 'A'
+            venue.id === 'homeplanet'
               ? '#f5f0f0' // 淡い赤
-              : venue.id === 'B'
+              : venue.id === 'movement'
                 ? '#f0f5f0' // 淡い緑
                 : '#f0f2f5' // 淡い青
 

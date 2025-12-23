@@ -71,7 +71,7 @@ export default function Home() {
             </p>
             <div className="flex gap-3 text-sm">
               <Link
-                href="/checkin/A"
+                href="/checkin/homeplanet"
                 className="hover:opacity-80 transition"
                 style={{ color: '#8b5555' }}
               >
@@ -79,7 +79,7 @@ export default function Home() {
               </Link>
               <span className="text-gray-600">|</span>
               <Link
-                href="/checkin/B"
+                href="/checkin/movement"
                 className="hover:opacity-80 transition"
                 style={{ color: '#558b55' }}
               >
@@ -87,7 +87,7 @@ export default function Home() {
               </Link>
               <span className="text-gray-600">|</span>
               <Link
-                href="/checkin/C"
+                href="/checkin/astro"
                 className="hover:opacity-80 transition"
                 style={{ color: '#55658b' }}
               >

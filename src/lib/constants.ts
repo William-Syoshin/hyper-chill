@@ -1,5 +1,5 @@
 // 会場ID
-export const VENUE_IDS = ['A', 'B', 'C'] as const;
+export const VENUE_IDS = ['homeplanet', 'movement', 'astro'] as const;
 export type VenueId = typeof VENUE_IDS[number];
 
 // Cookie設定

@@ -14,7 +14,7 @@ const path = require('path')
 
 // デプロイ先のURLを設定してください
 const BASE_URL = 'https://your-domain.com/checkin/'
-const VENUES = ['A', 'B', 'C']
+const VENUES = ['homeplanet', 'movement', 'astro']
 
 // 出力ディレクトリ
 const OUTPUT_DIR = path.join(__dirname, '../public/qr-codes')

@@ -1,18 +1,18 @@
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- venues テーブル（会場A/B/C）
+-- venues テーブル（会場）
 CREATE TABLE venues (
-  id VARCHAR(1) PRIMARY KEY,
+  id VARCHAR(20) PRIMARY KEY,
   name VARCHAR(50) NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- 初期データ挿入
 INSERT INTO venues (id, name) VALUES
-  ('A', 'HOME PLANET'),
-  ('B', 'MOVEMENT'),
-  ('C', 'ASTRO');
+  ('homeplanet', 'HOME PLANET'),
+  ('movement', 'MOVEMENT'),
+  ('astro', 'ASTRO');
 
 -- users テーブル
 CREATE TABLE users (
@@ -27,7 +27,7 @@ CREATE TABLE users (
 CREATE TABLE visit_logs (
   id BIGSERIAL PRIMARY KEY,
   user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  venue_id VARCHAR(1) NOT NULL REFERENCES venues(id),
+  venue_id VARCHAR(20) NOT NULL REFERENCES venues(id),
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -66,7 +66,7 @@ CREATE POLICY "photos_insert_anon" ON photos FOR INSERT WITH CHECK (true);
 CREATE POLICY "photos_select_all" ON photos FOR SELECT USING (true);
 
 -- コメント追加
-COMMENT ON TABLE venues IS '会場情報（A/B/C）';
+COMMENT ON TABLE venues IS '会場情報（HOME PLANET/MOVEMENT/ASTRO）';
 COMMENT ON TABLE users IS '来場者情報';
 COMMENT ON TABLE visit_logs IS '来場ログ（チェックイン履歴）';
 COMMENT ON TABLE photos IS '投稿写真';
