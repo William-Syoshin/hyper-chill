@@ -88,10 +88,12 @@ export async function getVisitors() {
           .limit(1)
           .single()
 
+        const typedLog = latestLog as { venue_id: string; venues: { name: string } | null } | null
+
         return {
           ...user,
-          current_venue_id: latestLog?.venue_id,
-          current_venue_name: (latestLog?.venues as any)?.name,
+          current_venue_id: typedLog?.venue_id,
+          current_venue_name: typedLog?.venues?.name,
         }
       })
     )
