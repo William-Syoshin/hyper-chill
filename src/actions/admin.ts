@@ -19,14 +19,14 @@ export async function getVenueCounts() {
         .select('user_id, venue_id, created_at')
         .order('created_at', { ascending: false })
 
-      if (logsError) {
+      if (logsError || !logs) {
         console.error('Error fetching visit logs:', logsError)
         return []
       }
 
       // 各ユーザーの最新のvenueを取得
       const latestVenues = new Map<string, string>()
-      logs?.forEach((log) => {
+      logs.forEach((log) => {
         if (!latestVenues.has(log.user_id)) {
           latestVenues.set(log.user_id, log.venue_id)
         }
