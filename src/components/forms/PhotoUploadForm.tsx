@@ -76,6 +76,7 @@ export function PhotoUploadForm() {
         {/* プレビュー */}
         {previewImage && (
           <div className="flex justify-center mb-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={previewImage}
               alt="プレビュー"

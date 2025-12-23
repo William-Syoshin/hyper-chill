@@ -119,6 +119,7 @@ export function RegisterForm({ venueId, venueName }: RegisterFormProps) {
         </label>
         {previewImage && (
           <div className="mb-3 flex justify-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={previewImage}
               alt="プレビュー"

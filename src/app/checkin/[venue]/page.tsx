@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import { checkIn } from '@/actions/checkin'
 import { validateVenueId } from '@/lib/validation'
 import { VENUE_IDS } from '@/lib/constants'
@@ -45,12 +46,12 @@ export default async function CheckinPage({ params }: PageProps) {
                 エラーが発生しました
               </h1>
               <p className="text-gray-400 mb-6">{result.error}</p>
-              <a
+              <Link
                 href="/"
                 className="inline-block px-6 py-3 bg-white/10 text-white rounded-lg hover:bg-white/20 transition border border-white/20"
               >
                 トップページへ
-              </a>
+              </Link>
             </div>
           </div>
         </main>
