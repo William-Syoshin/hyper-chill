@@ -70,7 +70,7 @@ export async function checkIn(venueId: string) {
       .insert({
         user_id: userId,
         venue_id: venueId,
-      })
+      } as any)
 
     if (logError) {
       console.error('visit_log insert error:', logError)
@@ -112,9 +112,11 @@ export async function getCurrentVenue(userId: string) {
       return null
     }
 
+    const typedData = data as { venue_id: string; venues: { name: string } | null } | null
+
     return {
-      venue_id: data.venue_id,
-      venue_name: (data.venues as any)?.name || data.venue_id,
+      venue_id: typedData?.venue_id || '',
+      venue_name: typedData?.venues?.name || typedData?.venue_id || '',
     }
   } catch (error) {
     console.error('getCurrentVenue error:', error)

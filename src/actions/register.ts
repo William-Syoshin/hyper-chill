@@ -73,7 +73,7 @@ export async function registerUser(formData: FormData) {
         nickname: nickname.trim(),
         instagram_id: instagramId.trim() || null,
         icon_image_url: iconImageUrl,
-      })
+      } as any)
       .select()
       .single()
 
@@ -92,7 +92,7 @@ export async function registerUser(formData: FormData) {
       .insert({
         user_id: user.id,
         venue_id: venueId,
-      })
+      } as any)
 
     if (logError) {
       console.error('Visit log creation error:', logError)

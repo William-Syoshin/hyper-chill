@@ -67,7 +67,7 @@ export async function uploadPhoto(formData: FormData) {
         user_id: userId,
         image_url: photoUrl,
         approved: false,
-      })
+      } as any)
 
     if (dbError) {
       console.error('Photo DB insert error:', dbError)

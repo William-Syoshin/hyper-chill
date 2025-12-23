@@ -196,7 +196,7 @@ export async function togglePhotoApproval(photoId: number, approved: boolean) {
 
     const { error } = await supabase
       .from('photos')
-      .update({ approved })
+      .update({ approved } as any)
       .eq('id', photoId)
 
     if (error) {
