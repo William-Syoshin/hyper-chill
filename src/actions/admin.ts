@@ -194,9 +194,10 @@ export async function togglePhotoApproval(photoId: number, approved: boolean) {
   try {
     const supabase = createAdminClient()
 
+    // @ts-ignore - Supabase type inference issue
     const { error } = await supabase
       .from('photos')
-      .update({ approved } as any)
+      .update({ approved })
       .eq('id', photoId)
 
     if (error) {

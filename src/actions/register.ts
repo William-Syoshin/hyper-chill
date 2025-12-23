@@ -67,13 +67,14 @@ export async function registerUser(formData: FormData) {
     }
 
     // ユーザーを作成
+    // @ts-ignore - Supabase type inference issue
     const { data: user, error: userError } = await supabase
       .from('users')
       .insert({
         nickname: nickname.trim(),
         instagram_id: instagramId.trim() || null,
         icon_image_url: iconImageUrl,
-      } as any)
+      })
       .select()
       .single()
 
@@ -87,12 +88,13 @@ export async function registerUser(formData: FormData) {
     }
 
     // visit_logを追加（初回チェックイン）
+    // @ts-ignore - Supabase type inference issue
     const { error: logError } = await supabase
       .from('visit_logs')
       .insert({
         user_id: user.id,
         venue_id: venueId,
-      } as any)
+      })
 
     if (logError) {
       console.error('Visit log creation error:', logError)

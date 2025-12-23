@@ -61,13 +61,14 @@ export async function uploadPhoto(formData: FormData) {
     const photoUrl = urlData.publicUrl
 
     // photosテーブルに保存
+    // @ts-ignore - Supabase type inference issue
     const { error: dbError } = await supabase
       .from('photos')
       .insert({
         user_id: userId,
         image_url: photoUrl,
         approved: false,
-      } as any)
+      })
 
     if (dbError) {
       console.error('Photo DB insert error:', dbError)

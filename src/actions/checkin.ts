@@ -65,12 +65,13 @@ export async function checkIn(venueId: string) {
     }
 
     // visit_logを追加（会場移動）
+    // @ts-ignore - Supabase type inference issue
     const { error: logError } = await supabase
       .from('visit_logs')
       .insert({
         user_id: userId,
         venue_id: venueId,
-      } as any)
+      })
 
     if (logError) {
       console.error('visit_log insert error:', logError)
