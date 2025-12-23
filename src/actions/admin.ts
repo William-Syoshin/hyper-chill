@@ -26,7 +26,7 @@ export async function getVenueCounts() {
 
       // 各ユーザーの最新のvenueを取得
       const latestVenues = new Map<string, string>()
-      logs.forEach((log) => {
+      ;(logs as Array<{ user_id: string; venue_id: string; created_at: string }>).forEach((log) => {
         if (!latestVenues.has(log.user_id)) {
           latestVenues.set(log.user_id, log.venue_id)
         }
