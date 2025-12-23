@@ -109,7 +109,7 @@ export async function getUserPhotos() {
       return []
     }
 
-    return data || []
+    return (data as Photo[]) || []
   } catch (error) {
     console.error('getUserPhotos error:', error)
     return []

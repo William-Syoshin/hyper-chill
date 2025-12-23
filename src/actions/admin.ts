@@ -1,6 +1,7 @@
 'use server'
 
 import { createAdminClient } from '@/lib/supabase/admin'
+import type { Venue, User, VisitLog, Photo } from '@/types/database'
 
 /**
  * 会場ごとの現在人数を取得
@@ -45,7 +46,7 @@ export async function getVenueCounts() {
         .order('id')
 
       return (
-        venues?.map((venue) => ({
+        (venues as Venue[] | null)?.map((venue) => ({
           ...venue,
           current_count: counts[venue.id] || 0,
         })) || []
@@ -78,7 +79,7 @@ export async function getVisitors() {
 
     // 各ユーザーの現在地を取得
     const usersWithVenue = await Promise.all(
-      (users || []).map(async (user) => {
+      ((users as User[] | null) || []).map(async (user) => {
         const { data: latestLog } = await supabase
           .from('visit_logs')
           .select('venue_id, venues(name)')
@@ -126,7 +127,7 @@ export async function getVisitLogs(limit = 100) {
       return []
     }
 
-    return data || []
+    return (data as any[]) || []
   } catch (error) {
     console.error('getVisitLogs error:', error)
     return []
@@ -177,7 +178,7 @@ export async function getPhotos() {
       return []
     }
 
-    return data || []
+    return (data as any[]) || []
   } catch (error) {
     console.error('getPhotos error:', error)
     return []

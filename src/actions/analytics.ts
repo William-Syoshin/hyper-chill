@@ -31,7 +31,7 @@ export async function getVenueTimeSeries(
       return []
     }
 
-    return data || []
+    return (data as Array<{ venue_id: string; created_at: string }>) || []
   } catch (error) {
     console.error('getVenueTimeSeries error:', error)
     return []
@@ -70,7 +70,7 @@ export async function getVenuePeakTimes() {
     }
 
     // 各ログを時間帯ごとに集計
-    logs.forEach((log) => {
+    ;(logs as Array<{ user_id: string; venue_id: string; created_at: string }>).forEach((log) => {
       const date = new Date(log.created_at)
       const hourKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:00`
 

@@ -22,7 +22,7 @@ export async function getVisitorsByVenue(venueId: string) {
 
     // 各ユーザーの最新の会場を取得
     const latestVenues = new Map<string, string>()
-    allLogs?.forEach((log) => {
+    ;(allLogs as Array<{ user_id: string; venue_id: string; created_at: string }> | null)?.forEach((log) => {
       if (!latestVenues.has(log.user_id)) {
         latestVenues.set(log.user_id, log.venue_id)
       }
@@ -51,7 +51,7 @@ export async function getVisitorsByVenue(venueId: string) {
       return []
     }
 
-    return users || []
+    return (users as any[]) || []
   } catch (error) {
     console.error('getVisitorsByVenue error:', error)
     return []
