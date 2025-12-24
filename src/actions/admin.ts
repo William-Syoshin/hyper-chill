@@ -159,6 +159,30 @@ export async function deleteUser(userId: string) {
 }
 
 /**
+ * チケット支払い状態を更新
+ */
+export async function toggleTicketPaid(userId: string, paid: boolean) {
+  try {
+    const supabase = createAdminClient() as any // Cast client to any
+
+    const { error } = await supabase
+      .from('users')
+      .update({ ticket_paid: paid })
+      .eq('id', userId)
+
+    if (error) {
+      console.error('Error updating ticket_paid:', error)
+      return { success: false, error: '更新に失敗しました' }
+    }
+
+    return { success: true }
+  } catch (error) {
+    console.error('toggleTicketPaid error:', error)
+    return { success: false, error: 'エラーが発生しました' }
+  }
+}
+
+/**
  * 写真一覧を取得
  */
 export async function getPhotos() {

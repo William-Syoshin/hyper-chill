@@ -1,74 +1,74 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { registerUser } from '@/actions/register'
-import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { registerUser } from "@/actions/register";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import {
   validateNickname,
   validateInstagramId,
   validateImage,
   type ValidationResult,
-} from '@/lib/validation'
-import { PHOTO_USAGE_NOTICE } from '@/lib/constants'
-import { setUserId } from '@/lib/cookie'
+} from "@/lib/validation";
+import { PHOTO_USAGE_NOTICE } from "@/lib/constants";
+import { setUserId } from "@/lib/cookie";
 
 interface RegisterFormProps {
-  venueId: string
-  venueName: string
+  venueId: string;
+  venueName: string;
 }
 
 export function RegisterForm({ venueId, venueName }: RegisterFormProps) {
-  const router = useRouter()
-  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{
-    nickname?: string
-    instagramId?: string
-    icon?: string
-    general?: string
-  }>({})
-  const [previewImage, setPreviewImage] = useState<string | null>(null)
+    nickname?: string;
+    instagramId?: string;
+    icon?: string;
+    general?: string;
+  }>({});
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-    const validation = validateImage(file)
+    const validation = validateImage(file);
     if (!validation.valid) {
-      setErrors((prev) => ({ ...prev, icon: validation.error }))
-      setPreviewImage(null)
-      return
+      setErrors((prev) => ({ ...prev, icon: validation.error }));
+      setPreviewImage(null);
+      return;
     }
 
-    setErrors((prev) => ({ ...prev, icon: undefined }))
+    setErrors((prev) => ({ ...prev, icon: undefined }));
 
     // プレビュー表示
-    const reader = new FileReader()
+    const reader = new FileReader();
     reader.onloadend = () => {
-      setPreviewImage(reader.result as string)
-    }
-    reader.readAsDataURL(file)
-  }
+      setPreviewImage(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setLoading(true)
-    setErrors({})
+    e.preventDefault();
+    setLoading(true);
+    setErrors({});
 
-    const formData = new FormData(e.currentTarget)
-    const nickname = formData.get('nickname') as string
-    const instagramId = formData.get('instagram_id') as string
-    const iconFile = formData.get('icon') as File
+    const formData = new FormData(e.currentTarget);
+    const nickname = formData.get("nickname") as string;
+    const instagramId = formData.get("instagram_id") as string;
+    const iconFile = formData.get("icon") as File;
 
     // クライアント側バリデーション
-    const nicknameValidation = validateNickname(nickname)
-    const instagramValidation = validateInstagramId(instagramId)
-    
+    const nicknameValidation = validateNickname(nickname);
+    const instagramValidation = validateInstagramId(instagramId);
+
     // 画像が選択されている場合のみバリデーション
-    let imageValidation: ValidationResult = { valid: true }
+    let imageValidation: ValidationResult = { valid: true };
     if (iconFile && iconFile.size > 0) {
-      imageValidation = validateImage(iconFile)
+      imageValidation = validateImage(iconFile);
     }
 
     if (
@@ -80,29 +80,29 @@ export function RegisterForm({ venueId, venueName }: RegisterFormProps) {
         nickname: nicknameValidation.error,
         instagramId: instagramValidation.error,
         icon: imageValidation.error,
-      })
-      setLoading(false)
-      return
+      });
+      setLoading(false);
+      return;
     }
 
     // 会場IDを追加
-    formData.append('venue_id', venueId)
+    formData.append("venue_id", venueId);
 
     // サーバーアクション実行
-    const result = await registerUser(formData)
+    const result = await registerUser(formData);
 
     if (result.success) {
       // Cookieに保存（クライアント側でも）
       if (result.userId) {
-        setUserId(result.userId)
+        setUserId(result.userId);
       }
       // 成功画面へリダイレクト
-      router.push(`/success?venue=${venueId}`)
+      router.push(`/success?venue=${venueId}`);
     } else {
-      setErrors({ general: result.error })
-      setLoading(false)
+      setErrors({ general: result.error });
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -140,10 +140,10 @@ export function RegisterForm({ venueId, venueName }: RegisterFormProps) {
         )}
       </div>
 
-      {/* ニックネーム */}
+      {/* お名前 */}
       <div>
         <label className="block text-sm font-medium text-gray-300 mb-2">
-          ニックネーム<span className="text-red-400 ml-1">*</span>
+          お名前<span className="text-red-400 ml-1">*</span>
         </label>
         <input
           type="text"
@@ -155,7 +155,9 @@ export function RegisterForm({ venueId, venueName }: RegisterFormProps) {
         {errors.nickname && (
           <p className="mt-1 text-sm text-red-400">{errors.nickname}</p>
         )}
-        <p className="mt-1 text-xs text-gray-500">20文字以内</p>
+        <p className="mt-1 text-xs text-gray-400">
+          LINEと同じ名前にしてください（20文字以内）
+        </p>
       </div>
 
       {/* Instagram ID */}
@@ -173,7 +175,9 @@ export function RegisterForm({ venueId, venueName }: RegisterFormProps) {
         {errors.instagramId && (
           <p className="mt-1 text-sm text-red-400">{errors.instagramId}</p>
         )}
-        <p className="mt-1 text-xs text-gray-500">@なしで入力してください（30文字以内）</p>
+        <p className="mt-1 text-xs text-gray-500">
+          @なしで入力してください（30文字以内）
+        </p>
       </div>
 
       {/* 写真利用規約 */}
@@ -194,9 +198,8 @@ export function RegisterForm({ venueId, venueName }: RegisterFormProps) {
         disabled={loading}
         className="w-full py-3 bg-white/10 hover:bg-white/20 disabled:bg-white/5 text-white font-medium rounded-lg border border-white/20 transition"
       >
-        {loading ? '登録中...' : '登録してチェックイン'}
+        {loading ? "登録中..." : "登録してチェックイン"}
       </button>
     </form>
-  )
+  );
 }
-

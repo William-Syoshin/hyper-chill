@@ -1,75 +1,75 @@
-'use client'
+"use client";
 
-import { useState, useRef } from 'react'
-import { uploadPhoto } from '@/actions/photos'
-import { Button } from '@/components/ui/Button'
-import { PHOTO_USAGE_NOTICE } from '@/lib/constants'
+import { useState, useRef } from "react";
+import { uploadPhoto } from "@/actions/photos";
+import { Button } from "@/components/ui/Button";
+import { PHOTO_USAGE_NOTICE } from "@/lib/constants";
 
 export function PhotoUploadForm() {
-  const formRef = useRef<HTMLFormElement>(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | undefined>()
-  const [success, setSuccess] = useState<string | undefined>()
-  const [previewImage, setPreviewImage] = useState<string | null>(null)
+  const formRef = useRef<HTMLFormElement>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>();
+  const [success, setSuccess] = useState<string | undefined>();
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const file = e.target.files?.[0];
+    if (!file) return;
 
     // サイズチェック
     if (file.size > 2 * 1024 * 1024) {
-      setError('画像サイズは2MB以内にしてください')
-      setPreviewImage(null)
-      return
+      setError("画像サイズは2MB以内にしてください");
+      setPreviewImage(null);
+      return;
     }
 
     // 形式チェック
-    if (!['image/jpeg', 'image/png'].includes(file.type)) {
-      setError('JPGまたはPNG形式の画像を選択してください')
-      setPreviewImage(null)
-      return
+    if (!["image/jpeg", "image/png"].includes(file.type)) {
+      setError("JPGまたはPNG形式の画像を選択してください");
+      setPreviewImage(null);
+      return;
     }
 
-    setError(undefined)
+    setError(undefined);
 
     // プレビュー表示
-    const reader = new FileReader()
+    const reader = new FileReader();
     reader.onloadend = () => {
-      setPreviewImage(reader.result as string)
-    }
-    reader.readAsDataURL(file)
-  }
+      setPreviewImage(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(undefined)
-    setSuccess(undefined)
+    e.preventDefault();
+    setLoading(true);
+    setError(undefined);
+    setSuccess(undefined);
 
-    const formData = new FormData(e.currentTarget)
+    const formData = new FormData(e.currentTarget);
 
-    const result = await uploadPhoto(formData)
+    const result = await uploadPhoto(formData);
 
     if (result.success) {
-      setSuccess(result.message)
-      setPreviewImage(null)
+      setSuccess(result.message);
+      setPreviewImage(null);
       // フォームをリセット
       if (formRef.current) {
-        formRef.current.reset()
+        formRef.current.reset();
       }
       // 3秒後に成功メッセージを消す
-      setTimeout(() => setSuccess(undefined), 3000)
+      setTimeout(() => setSuccess(undefined), 3000);
     } else {
-      setError(result.error)
+      setError(result.error);
     }
 
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   return (
     <div className="dark-card rounded-lg p-6">
       <h3 className="text-xl font-bold text-white mb-4 glow-text">
-        📷 イベントの思い出を投稿
+        スナップ写真を投稿
       </h3>
 
       <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
@@ -125,10 +125,9 @@ export function PhotoUploadForm() {
           disabled={loading}
           className="w-full py-3 bg-white/10 hover:bg-white/20 disabled:bg-white/5 text-white font-medium rounded-lg border border-white/20 transition"
         >
-          {loading ? 'アップロード中...' : '写真を投稿する'}
+          {loading ? "アップロード中..." : "写真を投稿する"}
         </button>
       </form>
     </div>
-  )
+  );
 }
-

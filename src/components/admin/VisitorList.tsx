@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { UserWithCurrentVenue } from '@/types/database'
-import { deleteUser } from '@/actions/admin'
+import { deleteUser, toggleTicketPaid } from '@/actions/admin'
 import { Button } from '@/components/ui/Button'
 
 interface VisitorListProps {
@@ -12,6 +12,7 @@ interface VisitorListProps {
 
 export function VisitorList({ visitors }: VisitorListProps) {
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [updatingId, setUpdatingId] = useState<string | null>(null)
 
   const handleDelete = async (userId: string, nickname: string) => {
     if (!confirm(`${nickname}さんを削除してもよろしいですか？`)) {
@@ -30,6 +31,18 @@ export function VisitorList({ visitors }: VisitorListProps) {
     }
   }
 
+  const handleToggleTicketPaid = async (userId: string, currentStatus: boolean) => {
+    setUpdatingId(userId)
+    const result = await toggleTicketPaid(userId, !currentStatus)
+
+    if (result.success) {
+      window.location.reload()
+    } else {
+      alert(result.error)
+      setUpdatingId(null)
+    }
+  }
+
   return (
     <div className="space-y-4">
       <div className="text-sm text-gray-600 mb-4">
@@ -44,13 +57,16 @@ export function VisitorList({ visitors }: VisitorListProps) {
                 写真
               </th>
               <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                ニックネーム
+                LINEの名前
               </th>
               <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
                 Instagram
               </th>
               <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
                 現在地
+              </th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                チケット支払い
               </th>
               <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
                 登録日時
@@ -98,6 +114,23 @@ export function VisitorList({ visitors }: VisitorListProps) {
                   ) : (
                     <span className="text-gray-400">-</span>
                   )}
+                </td>
+                <td className="px-4 py-3">
+                  <button
+                    onClick={() => handleToggleTicketPaid(visitor.id, visitor.ticket_paid)}
+                    disabled={updatingId === visitor.id}
+                    className={`px-4 py-2 rounded-lg text-sm font-semibold transition shadow-sm ${
+                      visitor.ticket_paid
+                        ? 'bg-green-500 text-white hover:bg-green-600'
+                        : 'bg-red-500 text-white hover:bg-red-600'
+                    } ${updatingId === visitor.id ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                  >
+                    {updatingId === visitor.id
+                      ? '更新中...'
+                      : visitor.ticket_paid
+                      ? '✓ 支払済み'
+                      : '✗ 未払い'}
+                  </button>
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-600">
                   {new Date(visitor.created_at).toLocaleString('ja-JP')}

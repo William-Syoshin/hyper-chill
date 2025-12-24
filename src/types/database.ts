@@ -32,6 +32,7 @@ export interface Database {
           nickname: string
           instagram_id: string | null
           icon_image_url: string
+          ticket_paid: boolean
           created_at: string
         }
         Insert: {
@@ -39,6 +40,7 @@ export interface Database {
           nickname: string
           instagram_id?: string | null
           icon_image_url: string
+          ticket_paid?: boolean
           created_at?: string
         }
         Update: {
@@ -46,6 +48,7 @@ export interface Database {
           nickname?: string
           instagram_id?: string | null
           icon_image_url?: string
+          ticket_paid?: boolean
           created_at?: string
         }
       }
