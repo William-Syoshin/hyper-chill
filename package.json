@@ -11,6 +11,7 @@
   "dependencies": {
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.45.4",
+    "browser-image-compression": "^2.0.2",
     "js-cookie": "^3.0.5",
     "next": "^16.1.1",
     "react": "^19.2.3",

@@ -4,10 +4,12 @@ import { useState, useRef } from "react";
 import { uploadPhoto } from "@/actions/photos";
 import { Button } from "@/components/ui/Button";
 import { PHOTO_USAGE_NOTICE } from "@/lib/constants";
+import imageCompression from "browser-image-compression";
 
 export function PhotoUploadForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("");
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -15,13 +17,6 @@ export function PhotoUploadForm() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    // サイズチェック
-    if (file.size > 2 * 1024 * 1024) {
-      setError("画像サイズは2MB以内にしてください");
-      setPreviewImage(null);
-      return;
-    }
 
     // 形式チェック
     if (!["image/jpeg", "image/png"].includes(file.type)) {
@@ -47,7 +42,26 @@ export function PhotoUploadForm() {
     setSuccess(undefined);
 
     const formData = new FormData(e.currentTarget);
+    const photoFile = formData.get("photo") as File;
 
+    // 画像圧縮
+    if (photoFile && photoFile.size > 0) {
+      try {
+        setLoadingMessage("画像を圧縮中...");
+        const options = {
+          maxSizeMB: 1, // 最大1MB
+          maxWidthOrHeight: 1920, // 最大1920px
+          useWebWorker: true,
+        };
+        const compressedFile = await imageCompression(photoFile, options);
+        formData.set("photo", compressedFile, photoFile.name);
+      } catch (error) {
+        console.error("画像圧縮エラー:", error);
+        // 圧縮に失敗しても元の画像でアップロード
+      }
+    }
+
+    setLoadingMessage("アップロード中...");
     const result = await uploadPhoto(formData);
 
     if (result.success) {
@@ -125,7 +139,33 @@ export function PhotoUploadForm() {
           disabled={loading}
           className="w-full py-3 bg-white/10 hover:bg-white/20 disabled:bg-white/5 text-white font-medium rounded-lg border border-white/20 transition"
         >
-          {loading ? "アップロード中..." : "写真を投稿する"}
+          {loading ? (
+            <span className="flex items-center justify-center gap-2">
+              <svg
+                className="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              {loadingMessage || "処理中..."}
+            </span>
+          ) : (
+            "写真を投稿する"
+          )}
         </button>
       </form>
     </div>

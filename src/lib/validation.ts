@@ -2,7 +2,6 @@ import {
   MAX_NICKNAME_LENGTH,
   MAX_INSTAGRAM_ID_LENGTH,
   INSTAGRAM_ID_REGEX,
-  MAX_IMAGE_SIZE,
   ALLOWED_IMAGE_TYPES,
   VENUE_IDS,
   type VenueId,
@@ -58,10 +57,7 @@ export function validateImage(file: File): ValidationResult {
     return { valid: false, error: 'JPGまたはPNG形式の画像を選択してください' }
   }
   
-  if (file.size > MAX_IMAGE_SIZE) {
-    const sizeMB = (MAX_IMAGE_SIZE / (1024 * 1024)).toFixed(0)
-    return { valid: false, error: `画像サイズは${sizeMB}MB以内にしてください` }
-  }
+  // サイズ制限は削除（クライアント側で自動圧縮されるため）
   
   return { valid: true }
 }

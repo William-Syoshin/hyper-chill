@@ -13,6 +13,7 @@ import {
 } from "@/lib/validation";
 import { PHOTO_USAGE_NOTICE } from "@/lib/constants";
 import { setUserId } from "@/lib/cookie";
+import imageCompression from "browser-image-compression";
 
 interface RegisterFormProps {
   venueId: string;
@@ -22,6 +23,7 @@ interface RegisterFormProps {
 export function RegisterForm({ venueId, venueName }: RegisterFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("");
   const [errors, setErrors] = useState<{
     nickname?: string;
     instagramId?: string;
@@ -30,7 +32,7 @@ export function RegisterForm({ venueId, venueName }: RegisterFormProps) {
   }>({});
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -43,7 +45,7 @@ export function RegisterForm({ venueId, venueName }: RegisterFormProps) {
 
     setErrors((prev) => ({ ...prev, icon: undefined }));
 
-    // プレビュー表示
+    // プレビュー表示（圧縮前の画像）
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreviewImage(reader.result as string);
@@ -85,10 +87,28 @@ export function RegisterForm({ venueId, venueName }: RegisterFormProps) {
       return;
     }
 
+    // 画像圧縮
+    if (iconFile && iconFile.size > 0) {
+      try {
+        setLoadingMessage("画像を圧縮中...");
+        const options = {
+          maxSizeMB: 0.5, // 最大0.5MB
+          maxWidthOrHeight: 800, // 最大800px
+          useWebWorker: true,
+        };
+        const compressedFile = await imageCompression(iconFile, options);
+        formData.set("icon", compressedFile, iconFile.name);
+      } catch (error) {
+        console.error("画像圧縮エラー:", error);
+        // 圧縮に失敗しても元の画像でアップロード
+      }
+    }
+
     // 会場IDを追加
     formData.append("venue_id", venueId);
 
     // サーバーアクション実行
+    setLoadingMessage("登録中...");
     const result = await registerUser(formData);
 
     if (result.success) {
@@ -196,9 +216,35 @@ export function RegisterForm({ venueId, venueName }: RegisterFormProps) {
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-3 bg-white/10 hover:bg-white/20 disabled:bg-white/5 text-white font-medium rounded-lg border border-white/20 transition"
+        className="w-full py-3 bg-white/10 hover:bg-white/20 disabled:bg-white/5 text-white font-medium rounded-lg border border-white/20 transition relative"
       >
-        {loading ? "登録中..." : "登録してチェックイン"}
+        {loading ? (
+          <span className="flex items-center justify-center gap-2">
+            <svg
+              className="animate-spin h-5 w-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            {loadingMessage || "処理中..."}
+          </span>
+        ) : (
+          "登録してチェックイン"
+        )}
       </button>
     </form>
   );

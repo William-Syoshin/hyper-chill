@@ -24,15 +24,12 @@ export async function uploadPhoto(formData: FormData) {
       return { success: false, error: '写真を選択してください' }
     }
 
-    // ファイルサイズチェック（2MB以内）
-    if (photoFile.size > 2 * 1024 * 1024) {
-      return { success: false, error: '写真サイズは2MB以内にしてください' }
-    }
-
     // ファイル形式チェック
     if (!['image/jpeg', 'image/png'].includes(photoFile.type)) {
       return { success: false, error: 'JPGまたはPNG形式の画像を選択してください' }
     }
+    
+    // サイズ制限は削除（クライアント側で自動圧縮されるため）
 
     const supabase = await createClient()
 
