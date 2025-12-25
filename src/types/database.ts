@@ -95,6 +95,32 @@ export interface Database {
           created_at?: string
         }
       }
+      discord_messages: {
+        Row: {
+          id: string
+          content: string
+          author_name: string
+          author_avatar: string | null
+          created_at: string
+          channel_id: string
+        }
+        Insert: {
+          id: string
+          content: string
+          author_name: string
+          author_avatar?: string | null
+          created_at: string
+          channel_id: string
+        }
+        Update: {
+          id?: string
+          content?: string
+          author_name?: string
+          author_avatar?: string | null
+          created_at?: string
+          channel_id?: string
+        }
+      }
     }
     Views: {}
     Functions: {}

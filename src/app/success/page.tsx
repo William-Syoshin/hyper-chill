@@ -4,6 +4,7 @@ import { getUserIdFromServer } from "@/lib/cookie";
 import { PhotoUploadForm } from "@/components/forms/PhotoUploadForm";
 import { RealtimeCounter } from "@/components/admin/RealtimeCounter";
 import { PaymentSection } from "@/components/PaymentSection";
+import { DiscordFeed } from "@/components/DiscordFeed";
 import { getVenueCounts } from "@/actions/admin";
 import { VenueWithCount } from "@/types/database";
 import { ENTRANCE_VENUE_ID } from "@/lib/constants";
@@ -113,9 +114,14 @@ async function SuccessContent({ venueId }: { venueId: string | null }) {
           <h3 className="text-2xl font-bold text-white mb-2 glow-text">
             💬 リアルタイムで来場者の会話をチェックしよう
           </h3>
-          <p className="text-gray-400 text-sm">
+          <p className="text-gray-400 text-sm mb-4">
             AIが来場者の会話を要約してお届けします
           </p>
+        </div>
+
+        {/* Discord Feed - 最新5件のメッセージ */}
+        <div className="mb-6">
+          <DiscordFeed />
         </div>
         
         <div className="flex justify-center">
@@ -140,7 +146,7 @@ async function SuccessContent({ venueId }: { venueId: string | null }) {
       </div>
 
       {/* 支払いセクション */}
-      <PaymentSection userId={userId} initialPaid={ticketPaid} />
+      <PaymentSection userId={userId ?? null} initialPaid={ticketPaid} />
     </div>
   );
 }
