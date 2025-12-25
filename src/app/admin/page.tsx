@@ -20,7 +20,7 @@ export default async function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-gray-900">
-              {stats.totalUsers}
+              {String(stats.totalUsers)}
             </div>
             <p className="text-xs text-gray-600 mt-1">人</p>
           </CardContent>
@@ -32,7 +32,7 @@ export default async function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-gray-900">
-              {stats.totalCheckins}
+              {String(stats.totalCheckins)}
             </div>
             <p className="text-xs text-gray-600 mt-1">回</p>
           </CardContent>
@@ -44,10 +44,10 @@ export default async function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-gray-900">
-              {stats.approvedPhotos}
+              {String(stats.approvedPhotos)}
             </div>
             <p className="text-xs text-gray-600 mt-1">
-              / {stats.totalPhotos}枚
+              / {String(stats.totalPhotos)}枚
             </p>
           </CardContent>
         </Card>

@@ -41,7 +41,7 @@ export function VenueCountDisplay({ initialVenues }: VenueCountDisplayProps) {
       {/* 総人数 */}
       <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg p-4 mb-4 text-center">
         <div className="text-sm text-gray-700 mb-1">総来場者数</div>
-        <div className="text-3xl font-bold text-purple-900">{totalCount}人</div>
+        <div className="text-3xl font-bold text-purple-900">{String(totalCount)}人</div>
       </div>
 
       {/* 会場別 */}
@@ -60,7 +60,7 @@ export function VenueCountDisplay({ initialVenues }: VenueCountDisplayProps) {
               className={`${color} border-2 rounded-lg p-3 text-center`}
             >
               <div className="text-sm font-semibold mb-1">{venue.name}</div>
-              <div className="text-2xl font-bold">{venue.current_count}</div>
+              <div className="text-2xl font-bold">{String(venue.current_count)}</div>
               <div className="text-xs mt-1">人</div>
             </div>
           )

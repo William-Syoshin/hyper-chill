@@ -58,10 +58,10 @@ export function VisitorList({ visitors }: VisitorListProps) {
       {/* 検索バーと統計 */}
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div className="text-sm text-gray-600">
-          総来場者数: {visitors.length}人
+          総来場者数: {String(visitors.length)}人
           {searchQuery && (
             <span className="ml-2 text-blue-600">
-              （検索結果: {filteredVisitors.length}人）
+              （検索結果: {String(filteredVisitors.length)}人）
             </span>
           )}
         </div>

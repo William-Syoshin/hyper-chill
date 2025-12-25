@@ -17,7 +17,7 @@ export default async function AnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-gray-900">
-              {stats.totalUsers}
+              {String(stats.totalUsers)}
             </div>
             <p className="text-xs text-gray-600 mt-1">人</p>
           </CardContent>
@@ -29,7 +29,7 @@ export default async function AnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-gray-900">
-              {stats.totalCheckins}
+              {String(stats.totalCheckins)}
             </div>
             <p className="text-xs text-gray-600 mt-1">回</p>
           </CardContent>
@@ -41,7 +41,7 @@ export default async function AnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-gray-900">
-              {stats.approvedPhotos}
+              {String(stats.approvedPhotos)}
             </div>
             <p className="text-xs text-gray-600 mt-1">枚</p>
           </CardContent>
@@ -87,7 +87,7 @@ export default async function AnalyticsPage() {
                       会場{peak.venue_id}
                     </div>
                     <div className="text-2xl font-bold text-gray-900">
-                      {peak.peak_count}人
+                      {String(peak.peak_count)}人
                     </div>
                     <div className="text-sm text-gray-600 mt-2">
                       {peak.peak_time || '未測定'}
@@ -121,8 +121,8 @@ export default async function AnalyticsPage() {
               <p className="text-sm text-gray-700 mt-1">
                 来場者は平均して
                 {stats.totalUsers > 0
-                  ? Math.floor(stats.totalCheckins / stats.totalUsers)
-                  : 0}
+                  ? String(Math.floor(stats.totalCheckins / stats.totalUsers))
+                  : '0'}
                 箇所の会場を訪問しています。
               </p>
             </div>
@@ -132,8 +132,8 @@ export default async function AnalyticsPage() {
                 📷 写真投稿状況
               </h3>
               <p className="text-sm text-gray-700">
-                総写真数: {stats.totalPhotos}枚（承認済み:{' '}
-                {stats.approvedPhotos}枚）
+                総写真数: {String(stats.totalPhotos)}枚（承認済み:{' '}
+                {String(stats.approvedPhotos)}枚）
               </p>
               <p className="text-sm text-gray-700 mt-1">
                 承認率:{' '}
@@ -141,7 +141,7 @@ export default async function AnalyticsPage() {
                   ? ((stats.approvedPhotos / stats.totalPhotos) * 100).toFixed(
                       1
                     )
-                  : 0}
+                  : '0'}
                 %
               </p>
             </div>
@@ -153,7 +153,7 @@ export default async function AnalyticsPage() {
               <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
                 {stats.approvedPhotos < stats.totalPhotos && (
                   <li>
-                    未承認の写真が{stats.totalPhotos - stats.approvedPhotos}
+                    未承認の写真が{String(stats.totalPhotos - stats.approvedPhotos)}
                     枚あります。写真管理ページで確認してください。
                   </li>
                 )}

@@ -42,7 +42,7 @@ export function RealtimeCounter({
               現在の総来場者数
             </div>
             <div className="text-5xl font-bold text-white glow-text">
-              {totalCount}
+              {String(totalCount)}
             </div>
             <div className="text-xs mt-2 text-gray-500">
               最終更新: {lastUpdated.toLocaleTimeString("ja-JP")}
@@ -62,7 +62,7 @@ export function RealtimeCounter({
       <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg p-6 shadow-lg">
         <div className="text-center">
           <div className="text-sm font-medium mb-2">現在の総来場者数</div>
-          <div className="text-5xl font-bold">{totalCount}</div>
+          <div className="text-5xl font-bold">{String(totalCount)}</div>
           <div className="text-xs mt-2 opacity-80">
             最終更新: {lastUpdated.toLocaleTimeString("ja-JP")}
           </div>

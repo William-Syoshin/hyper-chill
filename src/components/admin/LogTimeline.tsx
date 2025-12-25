@@ -11,7 +11,7 @@ export function LogTimeline({ logs }: LogTimelineProps) {
   return (
     <div className="space-y-4">
       <div className="text-sm text-gray-600 mb-4">
-        総チェックイン数: {logs.length}回
+        総チェックイン数: {String(logs.length)}回
       </div>
 
       <div className="space-y-3">

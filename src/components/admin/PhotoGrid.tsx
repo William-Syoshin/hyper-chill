@@ -101,19 +101,19 @@ export function PhotoGrid({ photos }: PhotoGridProps) {
       <div className="grid grid-cols-3 gap-4">
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
           <div className="text-2xl font-bold text-blue-900">
-            {photos.length}
+            {String(photos.length)}
           </div>
           <div className="text-sm text-blue-700">総写真数</div>
         </div>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
           <div className="text-2xl font-bold text-green-900">
-            {approvedPhotos.length}
+            {String(approvedPhotos.length)}
           </div>
           <div className="text-sm text-green-700">承認済み</div>
         </div>
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
           <div className="text-2xl font-bold text-yellow-900">
-            {pendingPhotos.length}
+            {String(pendingPhotos.length)}
           </div>
           <div className="text-sm text-yellow-700">未承認</div>
         </div>
@@ -124,11 +124,11 @@ export function PhotoGrid({ photos }: PhotoGridProps) {
         <div>
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold text-gray-900">
-              承認済み（{approvedPhotos.length}枚）
+              承認済み（{String(approvedPhotos.length)}枚）
             </h3>
             {approvedTotalPages > 1 && (
               <div className="text-sm text-gray-600">
-                {approvedPage} / {approvedTotalPages} ページ
+                {String(approvedPage)} / {String(approvedTotalPages)} ページ
               </div>
             )}
           </div>
@@ -159,11 +159,11 @@ export function PhotoGrid({ photos }: PhotoGridProps) {
         <div>
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold text-gray-900">
-              未承認（{pendingPhotos.length}枚）
+              未承認（{String(pendingPhotos.length)}枚）
             </h3>
             {pendingTotalPages > 1 && (
               <div className="text-sm text-gray-600">
-                {pendingPage} / {pendingTotalPages} ページ
+                {String(pendingPage)} / {String(pendingTotalPages)} ページ
               </div>
             )}
           </div>
@@ -389,7 +389,7 @@ function Pagination({
               : 'border-gray-300 text-gray-700 hover:bg-gray-50'
           }`}
         >
-          {page}
+          {String(page)}
         </button>
       ))}
 
@@ -400,7 +400,7 @@ function Pagination({
             onClick={() => onPageChange(totalPages)}
             className="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
-            {totalPages}
+            {String(totalPages)}
           </button>
         </>
       )}

@@ -135,7 +135,7 @@ export function VenueMap({ venues, darkMode = false }: VenueMapProps) {
               >
                 <div className="text-center">
                   <div className={`text-2xl font-bold ${countTextClass}`}>
-                    {venue.current_count}
+                    {String(venue.current_count)}
                   </div>
                   <div className={`text-xs ${countSubtextClass}`}>人</div>
                 </div>
