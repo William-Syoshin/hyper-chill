@@ -2,6 +2,13 @@
 export const VENUE_IDS = ['homeplanet', 'movement', 'astro'] as const;
 export type VenueId = typeof VENUE_IDS[number];
 
+// 事前登録用の会場ID
+export const ENTRANCE_VENUE_ID = 'entrance' as const;
+
+// 全会場ID（事前登録を含む）
+export const ALL_VENUE_IDS = [...VENUE_IDS, ENTRANCE_VENUE_ID] as const;
+export type AllVenueId = typeof ALL_VENUE_IDS[number];
+
 // Cookie設定
 export const COOKIE_NAME = 'hyper_user_id';
 export const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1年

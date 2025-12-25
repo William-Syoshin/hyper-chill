@@ -6,8 +6,10 @@
 ## 機能概要
 
 ### 来場者向け機能
+- **事前登録**: イベント前にオンラインで登録可能
 - QRコードでのチェックイン
 - 初回登録（写真・ニックネーム・Instagram ID）
+- 事前登録済みユーザーは簡易チェックインフォーム
 - 会場間の自動移動記録
 
 ### 管理者向け機能
@@ -52,7 +54,11 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 
 ### 4. データベースのセットアップ
 
-Supabaseのダッシュボードで、`supabase/migrations/00001_initial_schema.sql`の内容を実行してください。
+Supabaseのダッシュボードで、以下のマイグレーションファイルを順番に実行してください：
+
+1. `supabase/migrations/00001_initial_schema.sql` - 初期スキーマ
+2. `supabase/migrations/00003_add_ticket_paid.sql` - チケット支払いフラグ
+3. `supabase/migrations/00004_add_entrance_venue.sql` - 事前登録用会場の追加
 
 ### 5. Storageバケットの作成
 
@@ -71,13 +77,20 @@ npm run dev
 
 ## QRコードの生成
 
-各会場用のQRコードを生成してください：
+各会場用と事前登録用のQRコードを生成してください：
 
-- **会場A**: `https://your-domain.com/checkin/A`
-- **会場B**: `https://your-domain.com/checkin/B`
-- **会場C**: `https://your-domain.com/checkin/C`
+- **事前登録**: `https://your-domain.com/pre-register`
+- **HOME PLANET**: `https://your-domain.com/checkin/homeplanet`
+- **MOVEMENT**: `https://your-domain.com/checkin/movement`
+- **ASTRO**: `https://your-domain.com/checkin/astro`
 
-無料のQRコード生成サービス：
+自動生成スクリプトを使用する場合：
+
+```bash
+node scripts/generate-qr-codes.js
+```
+
+または、無料のQRコード生成サービスを使用：
 - https://www.qr-code-generator.com/
 - https://www.the-qrcode-generator.com/
 

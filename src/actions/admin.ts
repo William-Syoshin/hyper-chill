@@ -2,6 +2,7 @@
 
 import { createAdminClient } from '@/lib/supabase/admin'
 import type { Venue, User, VisitLog, Photo } from '@/types/database'
+import { ENTRANCE_VENUE_ID, VENUE_IDS } from '@/lib/constants'
 
 /**
  * 会場ごとの現在人数を取得
@@ -39,10 +40,11 @@ export async function getVenueCounts() {
         counts[venueId] = (counts[venueId] || 0) + 1
       })
 
-      // 会場情報を取得
+      // 会場情報を取得（entrance を除外）
       const { data: venues } = await supabase
         .from('venues')
         .select('*')
+        .in('id', VENUE_IDS as unknown as string[])
         .order('id')
 
       return (

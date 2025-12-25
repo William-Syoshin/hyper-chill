@@ -5,7 +5,7 @@ import { setUserIdOnServer } from "@/lib/cookie";
 import {
   validateNickname,
   validateInstagramId,
-  validateVenueId,
+  validateAllVenueId,
 } from "@/lib/validation";
 import { STORAGE_BUCKET_ICONS } from "@/lib/constants";
 
@@ -30,7 +30,7 @@ export async function registerUser(formData: FormData) {
       return { success: false, error: instagramValidation.error };
     }
 
-    if (!validateVenueId(venueId)) {
+    if (!validateAllVenueId(venueId)) {
       return { success: false, error: "無効な会場IDです" };
     }
 

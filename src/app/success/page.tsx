@@ -5,6 +5,7 @@ import { PhotoUploadForm } from "@/components/forms/PhotoUploadForm";
 import { RealtimeCounter } from "@/components/admin/RealtimeCounter";
 import { getVenueCounts } from "@/actions/admin";
 import { VenueWithCount } from "@/types/database";
+import { ENTRANCE_VENUE_ID } from "@/lib/constants";
 
 async function SuccessContent({ venueId }: { venueId: string | null }) {
   const supabase = await createClient();
@@ -42,6 +43,9 @@ async function SuccessContent({ venueId }: { venueId: string | null }) {
   // 会場別人数を取得
   const venues = (await getVenueCounts()) as VenueWithCount[];
 
+  // 事前登録かどうかをチェック
+  const isPreRegistration = venueId === ENTRANCE_VENUE_ID;
+
   return (
     <div className="space-y-6">
       {/* タイトル */}
@@ -53,24 +57,46 @@ async function SuccessContent({ venueId }: { venueId: string | null }) {
 
       {/* チェックイン完了メッセージ */}
       <div className="dark-card rounded-lg p-8 text-center">
-        <h2 className="text-3xl font-bold text-white mb-4 glow-text">
-          {venueName}にチェックインしました！
-        </h2>
-        {userName && (
-          <p className="text-xl text-gray-300 mb-6">
-            {userName}さん、ようこそ！
-          </p>
+        {isPreRegistration ? (
+          <>
+            <h2 className="text-3xl font-bold text-white mb-4 glow-text">
+              事前登録が完了しました！
+            </h2>
+            {userName && (
+              <p className="text-xl text-gray-300 mb-6">
+                {userName}さん、登録ありがとうございます！
+              </p>
+            )}
+            <div className="glass-effect rounded-lg p-4">
+              <p className="text-sm text-gray-300 mb-2">
+                イベント当日、会場でQRコードをスキャンするだけで簡単にチェックインできます。
+              </p>
+              <p className="text-sm text-gray-400">
+                当日お待ちしております！
+              </p>
+            </div>
+          </>
+        ) : (
+          <>
+            <h2 className="text-3xl font-bold text-white mb-4 glow-text">
+              {venueName}にチェックインしました！
+            </h2>
+            {userName && (
+              <p className="text-xl text-gray-300 mb-6">
+                {userName}さん、ようこそ！
+              </p>
+            )}
+            <div className="glass-effect rounded-lg p-4">
+              <p className="text-sm text-gray-300">
+                別の会場に移動する際は、その会場のQRコードを読み取ってください。
+                自動的に現在地が更新されます。
+              </p>
+            </div>
+          </>
         )}
-
-        <div className="glass-effect rounded-lg p-4">
-          <p className="text-sm text-gray-300">
-            別の会場に移動する際は、その会場のQRコードを読み取ってください。
-            自動的に現在地が更新されます。
-          </p>
-        </div>
       </div>
 
-      {/* 会場別人数表示 */}
+      {/* 会場別人数表示と地図 */}
       <div className="dark-card rounded-lg p-6">
         <RealtimeCounter initialVenues={venues} darkMode={true} />
       </div>

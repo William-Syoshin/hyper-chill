@@ -1,8 +1,10 @@
 import { redirect } from 'next/navigation'
 import { validateVenueId } from '@/lib/validation'
-import { VENUE_IDS } from '@/lib/constants'
+import { VENUE_IDS, ENTRANCE_VENUE_ID } from '@/lib/constants'
 import { RegisterForm } from '@/components/forms/RegisterForm'
+import { SimpleCheckinForm } from '@/components/forms/SimpleCheckinForm'
 import { createClient } from '@/lib/supabase/server'
+import { getUserIdFromServer } from '@/lib/cookie'
 
 interface PageProps {
   params: Promise<{
@@ -35,6 +37,42 @@ export default async function RegisterPage({ params }: PageProps) {
   const typedVenueData = venueData as { id: string; name: string } | null
   const venueName = typedVenueData?.name || `会場${venue}`
 
+  // ユーザーIDを取得
+  const userId = await getUserIdFromServer()
+  
+  // 事前登録済みかチェック
+  let showSimpleCheckin = false
+  let userNickname = ''
+  
+  if (userId) {
+    // ユーザー情報を取得
+    const { data: userData } = await supabase
+      .from('users')
+      .select('nickname')
+      .eq('id', userId)
+      .single()
+    
+    if (userData) {
+      userNickname = (userData as { nickname: string }).nickname
+      
+      // 最初の visit_log を取得して事前登録かチェック
+      const { data: firstLog } = await supabase
+        .from('visit_logs')
+        .select('venue_id')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: true })
+        .limit(1)
+        .single()
+      
+      const typedFirstLog = firstLog as { venue_id: string } | null
+      
+      // 最初の visit_log が 'entrance' なら事前登録済み
+      if (typedFirstLog && typedFirstLog.venue_id === ENTRANCE_VENUE_ID) {
+        showSimpleCheckin = true
+      }
+    }
+  }
+
   return (
     <main className="min-h-screen bg-black flex items-center justify-center p-4">
       <div className="max-w-md w-full">
@@ -46,7 +84,16 @@ export default async function RegisterPage({ params }: PageProps) {
         </div>
 
         <div className="dark-card rounded-lg p-6">
-          <RegisterForm venueId={venue} venueName={venueName} />
+          {showSimpleCheckin && userId ? (
+            <SimpleCheckinForm 
+              venueId={venue} 
+              venueName={venueName}
+              userId={userId}
+              userNickname={userNickname}
+            />
+          ) : (
+            <RegisterForm venueId={venue} venueName={venueName} />
+          )}
         </div>
       </div>
     </main>

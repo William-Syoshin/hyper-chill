@@ -4,7 +4,9 @@ import {
   INSTAGRAM_ID_REGEX,
   ALLOWED_IMAGE_TYPES,
   VENUE_IDS,
+  ALL_VENUE_IDS,
   type VenueId,
+  type AllVenueId,
 } from './constants'
 
 export type ValidationResult = {
@@ -63,10 +65,17 @@ export function validateImage(file: File): ValidationResult {
 }
 
 /**
- * 会場IDのバリデーション
+ * 会場IDのバリデーション（実際の会場のみ）
  */
 export function validateVenueId(venueId: string): venueId is VenueId {
   return VENUE_IDS.includes(venueId as VenueId)
+}
+
+/**
+ * 全会場IDのバリデーション（事前登録を含む）
+ */
+export function validateAllVenueId(venueId: string): venueId is AllVenueId {
+  return ALL_VENUE_IDS.includes(venueId as AllVenueId)
 }
 
 /**

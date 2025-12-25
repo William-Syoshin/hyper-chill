@@ -14,6 +14,24 @@ export default function Home() {
           </p>
         </div>
 
+        {/* 事前登録リンク */}
+        <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-8 mb-6">
+          <p className="text-lg font-bold text-blue-800 mb-2 text-center">
+            事前登録はこちら
+          </p>
+          <p className="text-sm text-gray-600 mb-4 text-center">
+            イベント当日の受付をスムーズに
+          </p>
+          <div className="text-center">
+            <Link
+              href="/pre-register"
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition tracking-wider"
+            >
+              事前登録する
+            </Link>
+          </div>
+        </div>
+
         {/* 開発用リンク */}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 mb-6">
           <p className="text-sm font-semibold text-yellow-600 mb-4 text-center">

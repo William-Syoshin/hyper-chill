@@ -13,8 +13,13 @@ const fs = require('fs')
 const path = require('path')
 
 // デプロイ先のURLを設定してください
-const BASE_URL = 'https://your-domain.com/checkin/'
-const VENUES = ['homeplanet', 'movement', 'astro']
+const BASE_URL = 'https://your-domain.com'
+const VENUES = [
+  { id: 'homeplanet', path: '/checkin/homeplanet', name: 'HOME PLANET' },
+  { id: 'movement', path: '/checkin/movement', name: 'MOVEMENT' },
+  { id: 'astro', path: '/checkin/astro', name: 'ASTRO' },
+  { id: 'pre-register', path: '/pre-register', name: '事前登録' }
+]
 
 // 出力ディレクトリ
 const OUTPUT_DIR = path.join(__dirname, '../public/qr-codes')
@@ -29,8 +34,8 @@ async function generateQRCodes() {
   console.log('QRコードを生成中...')
 
   for (const venue of VENUES) {
-    const url = `${BASE_URL}${venue}`
-    const filename = `venue_${venue}.png`
+    const url = `${BASE_URL}${venue.path}`
+    const filename = `${venue.id}.png`
     const filepath = path.join(OUTPUT_DIR, filename)
 
     try {
@@ -43,10 +48,10 @@ async function generateQRCodes() {
         },
       })
 
-      console.log(`✓ 会場${venue}のQRコードを生成しました: ${filename}`)
+      console.log(`✓ ${venue.name}のQRコードを生成しました: ${filename}`)
       console.log(`  URL: ${url}`)
     } catch (error) {
-      console.error(`✗ 会場${venue}のQRコード生成に失敗しました:`, error)
+      console.error(`✗ ${venue.name}のQRコード生成に失敗しました:`, error)
     }
   }
 
