@@ -16,7 +16,13 @@ export function RealtimeCounter({
   darkMode = false,
 }: RealtimeCounterProps) {
   const [venues, setVenues] = useState<VenueWithCount[]>(initialVenues);
-  const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    setLastUpdated(new Date());
+  }, []);
 
   useEffect(() => {
     const fetchVenues = async () => {
@@ -44,9 +50,11 @@ export function RealtimeCounter({
             <div className="text-5xl font-bold text-white glow-text">
               {String(totalCount)}
             </div>
-            <div className="text-xs mt-2 text-gray-500">
-              最終更新: {lastUpdated.toLocaleTimeString("ja-JP")}
-            </div>
+            {isMounted && lastUpdated && (
+              <div className="text-xs mt-2 text-gray-500">
+                最終更新: {lastUpdated.toLocaleTimeString("ja-JP")}
+              </div>
+            )}
           </div>
         </div>
 
@@ -63,9 +71,11 @@ export function RealtimeCounter({
         <div className="text-center">
           <div className="text-sm font-medium mb-2">現在の総来場者数</div>
           <div className="text-5xl font-bold">{String(totalCount)}</div>
-          <div className="text-xs mt-2 opacity-80">
-            最終更新: {lastUpdated.toLocaleTimeString("ja-JP")}
-          </div>
+          {isMounted && lastUpdated && (
+            <div className="text-xs mt-2 opacity-80">
+              最終更新: {lastUpdated.toLocaleTimeString("ja-JP")}
+            </div>
+          )}
         </div>
       </div>
 
