@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getUserIdFromServer } from "@/lib/cookie";
 import { PhotoUploadForm } from "@/components/forms/PhotoUploadForm";
 import { RealtimeCounter } from "@/components/admin/RealtimeCounter";
+import { PaymentSection } from "@/components/PaymentSection";
 import { getVenueCounts } from "@/actions/admin";
 import { VenueWithCount } from "@/types/database";
 import { ENTRANCE_VENUE_ID } from "@/lib/constants";
@@ -13,6 +14,7 @@ async function SuccessContent({ venueId }: { venueId: string | null }) {
 
   let venueName = venueId ? `会場${venueId}` : "会場";
   let userName = "";
+  let ticketPaid = false;
 
   if (venueId) {
     const { data: venueData } = await supabase
@@ -30,13 +32,14 @@ async function SuccessContent({ venueId }: { venueId: string | null }) {
   if (userId) {
     const { data: userData } = await supabase
       .from("users")
-      .select("nickname")
+      .select("nickname, ticket_paid")
       .eq("id", userId)
       .single();
 
-    const typedUserData = userData as { nickname: string } | null;
+    const typedUserData = userData as { nickname: string; ticket_paid: boolean } | null;
     if (typedUserData) {
       userName = typedUserData.nickname;
+      ticketPaid = typedUserData.ticket_paid;
     }
   }
 
@@ -103,6 +106,9 @@ async function SuccessContent({ venueId }: { venueId: string | null }) {
 
       {/* 写真アップロードフォーム */}
       <PhotoUploadForm />
+
+      {/* 支払いセクション */}
+      <PaymentSection userId={userId} initialPaid={ticketPaid} />
     </div>
   );
 }
