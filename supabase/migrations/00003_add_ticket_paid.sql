@@ -7,3 +7,5 @@ COMMENT ON COLUMN users.ticket_paid IS 'チケット料金支払い済みフラ�
 
 
 
+
+

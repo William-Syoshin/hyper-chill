@@ -15,7 +15,7 @@ const path = require('path')
 // デプロイ先のURLを設定してください
 const BASE_URL = 'https://your-domain.com'
 const VENUES = [
-  { id: 'homeplanet', path: '/checkin/homeplanet', name: 'HOME PLANET' },
+  { id: 'homeplanet', path: '/checkin/homeplanet', name: 'EOS BASEMENT' },
   { id: 'movement', path: '/checkin/movement', name: 'MOVEMENT' },
   { id: 'astro', path: '/checkin/astro', name: 'ASTRO' },
   { id: 'pre-register', path: '/pre-register', name: '事前登録' }

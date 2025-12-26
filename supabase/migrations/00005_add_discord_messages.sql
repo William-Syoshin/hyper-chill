@@ -20,3 +20,5 @@ CREATE POLICY "discord_messages_select_all" ON discord_messages FOR SELECT USING
 
 
 
+
+

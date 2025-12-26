@@ -10,7 +10,7 @@ CREATE TABLE venues (
 
 -- 初期データ挿入
 INSERT INTO venues (id, name) VALUES
-  ('homeplanet', 'HOME PLANET'),
+  ('homeplanet', 'EOS BASEMENT'),
   ('movement', 'MOVEMENT'),
   ('astro', 'ASTRO');
 
@@ -66,7 +66,7 @@ CREATE POLICY "photos_insert_anon" ON photos FOR INSERT WITH CHECK (true);
 CREATE POLICY "photos_select_all" ON photos FOR SELECT USING (true);
 
 -- コメント追加
-COMMENT ON TABLE venues IS '会場情報（HOME PLANET/MOVEMENT/ASTRO）';
+COMMENT ON TABLE venues IS '会場情報（EOS BASEMENT/MOVEMENT/ASTRO）';
 COMMENT ON TABLE users IS '来場者情報';
 COMMENT ON TABLE visit_logs IS '来場ログ（チェックイン履歴）';
 COMMENT ON TABLE photos IS '投稿写真';

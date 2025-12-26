@@ -80,7 +80,7 @@ npm run dev
 各会場用と事前登録用のQRコードを生成してください：
 
 - **事前登録**: `https://your-domain.com/pre-register`
-- **HOME PLANET**: `https://your-domain.com/checkin/homeplanet`
+- **EOS BASEMENT**: `https://your-domain.com/checkin/homeplanet`
 - **MOVEMENT**: `https://your-domain.com/checkin/movement`
 - **ASTRO**: `https://your-domain.com/checkin/astro`
 

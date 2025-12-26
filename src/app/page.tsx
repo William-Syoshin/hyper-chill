@@ -43,7 +43,7 @@ export default function Home() {
               className="font-medium hover:opacity-70 transition tracking-wider"
               style={{ color: "#8b5555" }}
             >
-              HOME PLANET
+              EOS BASEMENT
             </Link>
             <span className="text-gray-400">|</span>
             <Link
