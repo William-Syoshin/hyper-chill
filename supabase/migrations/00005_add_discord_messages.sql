@@ -18,3 +18,5 @@ ALTER TABLE discord_messages ENABLE ROW LEVEL SECURITY;
 -- すべてのユーザーが読み取り可能
 CREATE POLICY "discord_messages_select_all" ON discord_messages FOR SELECT USING (true);
 
+
+

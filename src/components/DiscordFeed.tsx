@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { getLatestDiscordMessages, syncDiscordMessages } from "@/actions/discord"
 
 interface DiscordMessage {
@@ -14,6 +14,7 @@ interface DiscordMessage {
 export function DiscordFeed() {
   const [messages, setMessages] = useState<DiscordMessage[]>([])
   const [loading, setLoading] = useState(true)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -22,7 +23,11 @@ export function DiscordFeed() {
       
       // データベースからメッセージを取得
       const data = await getLatestDiscordMessages(5)
-      setMessages(data)
+      // 時系列順（古い順）にソートして、新しいメッセージが下に来るようにする
+      const sortedData = [...data].sort((a, b) => 
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      )
+      setMessages(sortedData)
       setLoading(false)
     }
 
@@ -32,6 +37,13 @@ export function DiscordFeed() {
     const interval = setInterval(fetchMessages, 15000)
     return () => clearInterval(interval)
   }, [])
+
+  // メッセージが更新されたら自動的にスクロールを下に移動
+  useEffect(() => {
+    if (scrollContainerRef.current && messages.length > 0) {
+      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight
+    }
+  }, [messages])
 
   if (loading) {
     return (
@@ -50,7 +62,10 @@ export function DiscordFeed() {
   }
 
   return (
-    <div className="space-y-3 max-h-96 overflow-y-auto">
+    <div 
+      ref={scrollContainerRef}
+      className="space-y-3 max-h-96 overflow-y-auto"
+    >
       {messages.map((msg) => (
         <div key={msg.id} className="glass-effect rounded-lg p-3 hover:bg-white/5 transition">
           <div className="flex items-start gap-3">
@@ -93,4 +108,6 @@ export function DiscordFeed() {
     </div>
   )
 }
+
+
 

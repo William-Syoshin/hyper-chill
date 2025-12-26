@@ -6,3 +6,5 @@ INSERT INTO venues (id, name) VALUES
 
 -- RLSポリシーは既存のものが適用される
 
+
+
