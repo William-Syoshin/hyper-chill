@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { validateUUID } from '@/lib/validation'
 
 /**
@@ -13,7 +13,7 @@ export async function updatePaymentStatus(userId: string, paid: boolean) {
       return { success: false, error: '無効なユーザーIDです' }
     }
 
-    const supabase = await createClient()
+    const supabase = createAdminClient()
 
     const { error } = await (supabase as any)
       .from('users')

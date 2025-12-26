@@ -13,6 +13,7 @@ import {
 } from "@/lib/validation";
 import { PHOTO_USAGE_NOTICE } from "@/lib/constants";
 import { setUserId } from "@/lib/cookie";
+import { PaymentSection } from "@/components/PaymentSection";
 import imageCompression from "browser-image-compression";
 
 interface RegisterFormProps {
@@ -31,6 +32,7 @@ export function RegisterForm({ venueId, venueName }: RegisterFormProps) {
     general?: string;
   }>({});
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [ticketPaid, setTicketPaid] = useState(false);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -106,6 +108,9 @@ export function RegisterForm({ venueId, venueName }: RegisterFormProps) {
 
     // 会場IDを追加
     formData.append("venue_id", venueId);
+    
+    // 支払い状態を追加
+    formData.append("ticket_paid", ticketPaid ? "true" : "false");
 
     // サーバーアクション実行
     setLoadingMessage("登録中...");
@@ -204,6 +209,13 @@ export function RegisterForm({ venueId, venueName }: RegisterFormProps) {
       <div className="glass-effect rounded-lg p-4 border-blue-500/30">
         <p className="text-sm text-gray-300">{PHOTO_USAGE_NOTICE}</p>
       </div>
+
+      {/* 支払いセクション */}
+      <PaymentSection 
+        userId={null} 
+        initialPaid={false} 
+        onPaymentStatusChange={setTicketPaid}
+      />
 
       {/* エラーメッセージ */}
       {errors.general && (

@@ -18,6 +18,8 @@ export async function registerUser(formData: FormData) {
     const instagramId = formData.get("instagram_id") as string;
     const venueId = formData.get("venue_id") as string;
     const iconFile = formData.get("icon") as File;
+    const ticketPaidStr = formData.get("ticket_paid") as string;
+    const ticketPaid = ticketPaidStr === "true";
 
     // バリデーション
     const nicknameValidation = validateNickname(nickname);
@@ -95,6 +97,7 @@ export async function registerUser(formData: FormData) {
         nickname: nickname.trim(),
         instagram_id: instagramId.trim() || null,
         icon_image_url: iconImageUrl,
+        ticket_paid: ticketPaid,
       })
       .select()
       .single();
